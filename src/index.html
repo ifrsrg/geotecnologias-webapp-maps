@@ -1,0 +1,71 @@
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+<title>Mapas dinamicos</title>
+<script>
+var map;
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: -32.040223 ,lng: -52.088797},
+    zoom: 15
+  });
+  map.data.loadGeoJson('data.txt');
+  map.data.setStyle(function(feature) {
+    var color = feature.getProperty('color');
+    return {
+      fillColor: color,
+      strokeWeight: 1
+    };
+});
+}
+function mapa(){
+var choices = [];	
+var els = document.getElementsByName('ma');
+for (var i=0;i<els.length;i++){
+  if ( els[i].checked ) {
+    choices.push(els[i].value);
+  }
+}
+callPHP(choices);
+}
+function callPHP(params) {
+    var httpc = new XMLHttpRequest(); // simplified for clarity
+    var url = "get_data.php";
+    httpc.open("POST", url, true); // sending as POST
+
+    httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    //httpc.setRequestHeader("Content-Length", params.length); // POST request MUST have a Content-Length header (as per HTTP/1.1)
+
+    httpc.onreadystatechange = function() { //Call a function when the state changes.
+    if(httpc.readyState == 4 && httpc.status == 200) { // complete and no errors
+        //alert(httpc.responseText); // some processing here, or whatever you want to do with the response
+        document.getElementById('msg').innerHTML = httpc.responseText;
+        initMap();
+        }
+    }
+    httpc.send('Kappa='+params);
+}
+
+</script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6Wg5KXrHUXh_iNlSwN69JR2kPQkXkkb8&callback=initMap"
+        async defer></script>
+</head>
+<body>
+<form>
+  <input type="checkbox" name="ma" value="Bairro" onclick=mapa()> Bairros<br>
+  <input type="checkbox" name="ma" value="Dengue" onclick=mapa()> Dengue<br>
+</form>
+<div id="map"></div>
+<div id='msg'></div>
+</body>

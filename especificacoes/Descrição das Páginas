@@ -1,0 +1,15 @@
+Área Restrita: Login dos usuários. 
+Atividades: Listagem de imagens para colorir.
+Contato: Formulário de contato que envia a mensagem para o e-mail do Geosaúde.
+Downloads: Listagem (nome, descrição e opção de download) de tutoriais, etc.
+Equipe: Listagem (foto, descrição e link para o currículo) dos membros da equipe do Geosaúde.
+Fotos: Listagem de fotos das atividades do programa.
+Index: Página principal. Pequena descrição do projeto. 
+Mapas: Visualização de mapas (área geral, epidemio, ambiental e SMS).
+Notícia: Acesso do bolsista. Opção de inserir uma notícia.
+Notícias: Listagem das notícias na área geral do site.
+Sobre: Descrição sobre o programa, link para a página sobre a equipe.
+
+OBS: 
+No menu está faltando a opção "Notícias", que vai levar à página "Notícias".
+
