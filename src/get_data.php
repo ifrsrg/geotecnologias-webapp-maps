@@ -1,10 +1,12 @@
 <?php
 //VERSÃO UTILIZADA, MOSTRANDO VÁRIAS REQUISISÕES AO MESMO TEMPO
-var_dump($_POST);
+//var_dump($_POST);
 require ('gPoint.php');
 $i = 0;
-$batata = $_POST['Kappa'];
+$batata = $_REQUEST['Kappa'];
 $pedacos = explode(",", $batata);
+$json = "";
+$json.='{"type": "FeatureCollection","features": [';
 file_put_contents('data.txt', '{"type": "FeatureCollection","features": [');
 while($i<count($pedacos)){
 	if($pedacos[$i] == "Bairro"){
@@ -67,6 +69,7 @@ while($i<count($pedacos)){
 			$s = $s+1;
 			array_push($p, $txt);
 		}
+		$json.=$p;
 		file_put_contents('data.txt', $p, FILE_APPEND);
 	}
 	if($pedacos[$i] == "Dengue"){
@@ -89,12 +92,20 @@ while($i<count($pedacos)){
 			}else{
 				$points[$i] = '{ "type": "Feature","geometry": {"type": "Point","coordinates": ['.$g->Long().','.$g->Lat().']},"properties": {"prop0": "value0","prop1": 0.0}}';
 			}
+			$json.=$points[$i];
 			array_push($texto, $points[$i]);
 			$i = $i+1;
 		}
+		#echo var_dump($texto);
+		//$json.=json_encode($texto);
 		file_put_contents('data.txt', $texto, FILE_APPEND);
 	}
 	$i = $i+1;
 }
+$json.="]}";
 file_put_contents('data.txt', ']}', FILE_APPEND);
+
+#header("Content-type: application/json");
+echo ($json);
+
 ?>

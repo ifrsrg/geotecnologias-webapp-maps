@@ -15,12 +15,49 @@
 <title>Mapas dinamicos</title>
 <script>
 var map;
-function initMap() {
+
+function count(obj) {
+   var count=0;
+   for(var prop in obj) {
+      if (obj.hasOwnProperty(prop)) {
+         ++count;
+      }
+   }
+   return count;
+}
+function initMap(params) {
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: -32.040223 ,lng: -52.088797},
     zoom: 15
   });
-  map.data.loadGeoJson('data.txt');
+  alert("iai men");
+  //alert(JSON.stringify(params));
+  a = JSON.parse(params);
+  //alert(params);
+  var i = 0;
+  do{
+     
+    lat = a.features[i].geometry.coordinates[0];
+    lng = a.features[i].geometry.coordinates[1];
+    alert(lat+";"+lng);
+  //alert(a.features[i].geometry.coordinates[0]);
+  //alert(myLatLng);
+ var myLatLng = {lat: lat, lng: lng};
+ alert(map);
+  var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          title: 'Hello World!'
+        }); 
+  i++;
+  marker.setMap(map);
+  //alert(count(a.features));
+  }while(i<20);
+  //while(i<count(a.features));
+  //alert(a.features.geometry.coordinates[0]);,
+
+  alert("kk");
+  //map.data.loadGeoJson('data.txt');
   map.data.setStyle(function(feature) {
     var color = feature.getProperty('color');
     return {
@@ -30,7 +67,7 @@ function initMap() {
 });
 }
 function mapa(){
-var choices = [];	
+var choices = []; 
 var els = document.getElementsByName('ma');
 for (var i=0;i<els.length;i++){
   if ( els[i].checked ) {
@@ -43,20 +80,18 @@ function callPHP(params) {
     var httpc = new XMLHttpRequest(); // simplified for clarity
     var url = "get_data.php";
     httpc.open("POST", url, true); // sending as POST
-
     httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //httpc.setRequestHeader("Content-Length", params.length); // POST request MUST have a Content-Length header (as per HTTP/1.1)
-
     httpc.onreadystatechange = function() { //Call a function when the state changes.
     if(httpc.readyState == 4 && httpc.status == 200) { // complete and no errors
         //alert(httpc.responseText); // some processing here, or whatever you want to do with the response
         document.getElementById('msg').innerHTML = httpc.responseText;
-        initMap();
+        initMap(httpc.responseText);
+    
         }
     }
     httpc.send('Kappa='+params);
 }
-
 </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6Wg5KXrHUXh_iNlSwN69JR2kPQkXkkb8&callback=initMap"
         async defer></script>
