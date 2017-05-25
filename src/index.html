@@ -25,11 +25,48 @@ function count(obj) {
    }
    return count;
 }
+
+function initMap(params) { //Recebe o JSON como parâmetro
+  var myLatLng = {lat: -32.040223 ,lng: -52.088797};
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 15,
+    center: myLatLng
+  });
+ a = JSON.parse(params);
+ var i = 0;
+ while (i<2){
+  alert("iai men");
+    lat = (a.features[i].geometry.coordinates);
+    lng = (a.features[i].geometry.coordinates);
+    alert(lat);
+    alert(lng);
+    MyLatLng = {lat: lat ,lng: lng};
+    alert(MyLatLng.lat);
+  var marker = new google.maps.Marker({
+    position: MyLatLng,
+    map: map,
+    title: 'Hello World!'
+  });
+  i++;
+ }
+   
+   
+}
+/*
 function initMap(params) {
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: -32.040223 ,lng: -52.088797},
     zoom: 15
   });
+
+
+
+
+
+
+
+
+
   alert("iai men");
   //alert(JSON.stringify(params));
   a = JSON.parse(params);
@@ -39,24 +76,24 @@ function initMap(params) {
      
     lat = a.features[i].geometry.coordinates[0];
     lng = a.features[i].geometry.coordinates[1];
-    alert(lat+";"+lng);
+    //alert(lat+";"+lng);
   //alert(a.features[i].geometry.coordinates[0]);
   //alert(myLatLng);
  var myLatLng = {lat: lat, lng: lng};
- alert(map);
+
   var marker = new google.maps.Marker({
           position: myLatLng,
-          map: map,
-          title: 'Hello World!'
+          title: 'Foco de dengue'
         }); 
   i++;
+
   marker.setMap(map);
   //alert(count(a.features));
-  }while(i<20);
+  }while(i<count(a.features));
   //while(i<count(a.features));
   //alert(a.features.geometry.coordinates[0]);,
 
-  alert("kk");
+  
   //map.data.loadGeoJson('data.txt');
   map.data.setStyle(function(feature) {
     var color = feature.getProperty('color');
@@ -65,7 +102,7 @@ function initMap(params) {
       strokeWeight: 1
     };
 });
-}
+}*/
 function mapa(){
 var choices = []; 
 var els = document.getElementsByName('ma');
