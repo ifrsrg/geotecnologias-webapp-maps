@@ -26,6 +26,10 @@ function count(obj) {
    return count;
 }
 
+function initMap2(){
+  
+}
+
 function initMap(params) { //Recebe o JSON como parâmetro
   var myLatLng = {lat: -32.040223 ,lng: -52.088797};
   var map = new google.maps.Map(document.getElementById('map'), {
@@ -34,6 +38,7 @@ function initMap(params) { //Recebe o JSON como parâmetro
   });
  a = JSON.parse(params);
  var i = 0;
+
  while (i<2){
   alert("iai men");
     lat = (a.features[i].geometry.coordinates);

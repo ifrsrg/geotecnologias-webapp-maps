@@ -98,12 +98,12 @@ while($i<count($pedacos)){
 		}
 		#echo var_dump($texto);
 		//$json.=json_encode($texto);
-		file_put_contents('data.txt', $texto, FILE_APPEND);
+		//file_put_contents('data.txt', $texto, FILE_APPEND);
 	}
 	$i = $i+1;
 }
 $json.="]}";
-file_put_contents('data.txt', ']}', FILE_APPEND);
+//file_put_contents('data.txt', ']}', FILE_APPEND);
 
 #header("Content-type: application/json");
 echo ($json);
