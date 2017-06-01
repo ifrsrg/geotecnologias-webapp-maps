@@ -22,20 +22,26 @@
   <body>
     <div id="map"></div>
     <script>
+    var coords = [-32.040223,-52.088797,-32.197477973099,-52.165170276417];
+    function initMap() {
+       var myLatLng = {lat: -32.040223 ,lng: -52.088797};
 
-      function initMap() {
-         var myLatLng = {lat: -32.040223 ,lng: -52.088797};
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 15  ,
+        center: myLatLng
+      });
 
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 15  ,
-          center: myLatLng
-        });
+    for(var i = 0; i<2; i++){
+      alert ("kk");
+      myLatLng = {lat: coords[i] ,lng: coords[i+1]};
+      var marker = new google.maps.Marker({
+      position: myLatLng,
+      map: map,
+      title: 'Hello World!'
+      });
+    }
 
-        var marker = new google.maps.Marker({
-        position: myLatLng,
-        map: map,
-        title: 'Hello World!'
-        });
+
 
         myLatLng = {lat: -32.197477973099,lng: -52.165170276417};
          var marker = new google.maps.Marker({

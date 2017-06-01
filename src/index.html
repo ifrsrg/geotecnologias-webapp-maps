@@ -26,90 +26,43 @@ function count(obj) {
    return count;
 }
 
-function initMap2(){
-  
-}
+
 
 function initMap(params) { //Recebe o JSON como parâmetro
+  alert ("initMap iniciado");
+
   var myLatLng = {lat: -32.040223 ,lng: -52.088797};
   var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 15,
     center: myLatLng
   });
  a = JSON.parse(params);
- var i = 0;
 
- while (i<2){
-  alert("iai men");
-    lat = (a.features[i].geometry.coordinates);
-    lng = (a.features[i].geometry.coordinates);
-    alert(lat);
-    alert(lng);
-    MyLatLng = {lat: lat ,lng: lng};
-    alert(MyLatLng.lat);
-  var marker = new google.maps.Marker({
-    position: MyLatLng,
-    map: map,
-    title: 'Hello World!'
-  });
-  i++;
- }
-   
-   
+
+ for(var i = 0; i<350; i++){ // adicionar limite com count
+   alert ("kk");
+   var coords2 = "";
+   var coords = ((a.features[i].geometry.coordinates)+""); // converte o json referente a coordenada em string
+   var coords2 = coords.split(","); //Split da latitude longitude 
+
+
+   lng = parseFloat(coords2[0]); // Conversão em float da latitude e da longitude para plotar os markers
+   lat = parseFloat(coords2[1]);
+   //lng = parseFloat(a.features[i].geometry.coordinates);
+   myLatLng = {lat: lat ,lng: lng};
+   alert(lat);
+   alert(lng);
+   var marker = new google.maps.Marker({
+   position: myLatLng,
+   map: map,
+   title: 'Foco de dengue'
+   });
+  alert("fim laço de repetição");
 }
-/*
-function initMap(params) {
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: -32.040223 ,lng: -52.088797},
-    zoom: 15
-  });
+ }
 
-
-
-
-
-
-
-
-
-  alert("iai men");
-  //alert(JSON.stringify(params));
-  a = JSON.parse(params);
-  //alert(params);
-  var i = 0;
-  do{
-     
-    lat = a.features[i].geometry.coordinates[0];
-    lng = a.features[i].geometry.coordinates[1];
-    //alert(lat+";"+lng);
-  //alert(a.features[i].geometry.coordinates[0]);
-  //alert(myLatLng);
- var myLatLng = {lat: lat, lng: lng};
-
-  var marker = new google.maps.Marker({
-          position: myLatLng,
-          title: 'Foco de dengue'
-        }); 
-  i++;
-
-  marker.setMap(map);
-  //alert(count(a.features));
-  }while(i<count(a.features));
-  //while(i<count(a.features));
-  //alert(a.features.geometry.coordinates[0]);,
-
-  
-  //map.data.loadGeoJson('data.txt');
-  map.data.setStyle(function(feature) {
-    var color = feature.getProperty('color');
-    return {
-      fillColor: color,
-      strokeWeight: 1
-    };
-});
-}*/
 function mapa(){
-var choices = []; 
+var choices = [];
 var els = document.getElementsByName('ma');
 for (var i=0;i<els.length;i++){
   if ( els[i].checked ) {
@@ -129,7 +82,7 @@ function callPHP(params) {
         //alert(httpc.responseText); // some processing here, or whatever you want to do with the response
         document.getElementById('msg').innerHTML = httpc.responseText;
         initMap(httpc.responseText);
-    
+
         }
     }
     httpc.send('Kappa='+params);
