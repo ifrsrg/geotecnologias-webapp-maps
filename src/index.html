@@ -37,10 +37,10 @@ function initMap(params) { //Recebe o JSON como parâmetro
     center: myLatLng
   });
  a = JSON.parse(params);
+ length = Object.keys(a.features).length // conta o número de argumentos do objeto
 
-
- for(var i = 0; i<350; i++){ // adicionar limite com count
-   alert ("kk");
+ for(var i = 0; i<length; i++){ //
+   alert(Object.keys(a.features).length);
    var coords2 = "";
    var coords = ((a.features[i].geometry.coordinates)+""); // converte o json referente a coordenada em string
    var coords2 = coords.split(","); //Split da latitude longitude 
@@ -48,7 +48,6 @@ function initMap(params) { //Recebe o JSON como parâmetro
 
    lng = parseFloat(coords2[0]); // Conversão em float da latitude e da longitude para plotar os markers
    lat = parseFloat(coords2[1]);
-   //lng = parseFloat(a.features[i].geometry.coordinates);
    myLatLng = {lat: lat ,lng: lng};
    alert(lat);
    alert(lng);
