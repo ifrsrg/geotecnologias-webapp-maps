@@ -1,1 +1,11 @@
 float(-32.029997012252) ["long"]=> float(-52.092604949023) ["utmNorthing"]=> string(10) "6455717.59" ["utmEasting"]=> string(9) "396828.48" ["utmZone"]=> string(3) "22S" ["lccNorthing"]=> NULL ["lccEasting"]=> NULL ["falseNorthing"]=> NULL ["falseEasting"]=> NULL ["latOfOrigin"]=> NULL ["longOfOrigin"]=> NULL ["firstStdParallel"]=> NULL ["secondStdParallel"]=> NULL }
+
+
+_________________________________________________________________________________-
+SELECT ST_X(the_geom), ST_Y(the_geom)
+FROM
+(SELECT ST_Transform(the_geom, 4326) as the_geom from armadilhas) g;
+
+SELECT ST_X(the_geom), ST_Y(the_geom), logradouro
+FROM
+(SELECT ST_Transform(the_geom, 4326) as the_geom, logradouro from armadilhas) g;
