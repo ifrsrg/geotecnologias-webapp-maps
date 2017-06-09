@@ -84,17 +84,14 @@ while($i<count($pedacos)){
 		$fim1 = ']}';
 		while($i < $m){
 			$arr = pg_fetch_array($result, $i, PGSQL_NUM);
-			echo var_dump($arr);
 			$l = $arr[2];
 			$g->setUTM($arr[0], $arr[1], "22S");
 			$g->convertTMtoLL();
-			echo var_dump($g);
 			if($i<$m-1){
 				$points[$i] = '{ "type": "Feature","geometry": {"type": "Point","coordinates": ['.$g->Long().','.$g->Lat().']},"properties": {"prop0": "value0","prop1": 0.0}},';
 			}else{
 				$points[$i] = '{ "type": "Feature","geometry": {"type": "Point","coordinates": ['.$g->Long().','.$g->Lat().']},"properties": {"prop0": "value0","prop1": 0.0}}';
 			}
-			die();
 			$json.=$points[$i];
 			array_push($texto, $points[$i]);
 			$i = $i+1;

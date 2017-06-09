@@ -3,6 +3,7 @@
 //var_dump($_POST);
 require ('gPoint.php');
 $i = 0;
+
 $batata = $_REQUEST['Kappa'];
 $pedacos = explode(",", $batata);
 $json = "";
@@ -75,7 +76,9 @@ while($i<count($pedacos)){
 	if($pedacos[$i] == "Dengue"){
 		$g = new gPoint();
 		$bdcon = pg_connect("host={$_ENV['gs_host']} port={$_ENV['gs_port']} dbname={$_ENV['gs_dbname_dengue']} user={$_ENV['gs_user']} password={$_ENV['gs_password']}");
-		$result = pg_exec($bdcon, "SELECT x, y, logradouro FROM armadilhas");
+		$result = pg_exec($bdcon, "SELECT ST_X(the_geom), ST_Y(the_geom), logradouro FROM(SELECT ST_Transform
+			(the_geom, 4326) as the_geom, logradouro from armadilhas) g");
+
 		$ct = pg_fetch_all($result);
 		$m = count($ct);
 		$i = 0;
@@ -84,28 +87,27 @@ while($i<count($pedacos)){
 		$fim1 = ']}';
 		while($i < $m){
 			$arr = pg_fetch_array($result, $i, PGSQL_NUM);
-			$l = $arr[2];
-			$g->setUTM($arr[0], $arr[1], "22S");
-			$g->convertTMtoLL();
+			while ($row = pg_fetch_assoc($result)) {
+      		$l = $row['logradouro'];
+      		$x =  $row['st_x'];
+   		   	$y =  $row['st_y'];
 			if($i<$m-1){
-				$points[$i] = '{ "type": "Feature","geometry": {"type": "Point","coordinates": ['.$g->Long().','.$g->Lat().']},"properties": {"prop0": "value0","prop1": 0.0}},';
+				$points[$i] = '{ "type": "Feature","geometry": {"type": "Point","coordinates": ['.$x.','.$y.']},"properties": {"prop0": "value0","prop1": 0.0}},';
 			}else{
-				$points[$i] = '{ "type": "Feature","geometry": {"type": "Point","coordinates": ['.$g->Long().','.$g->Lat().']},"properties": {"prop0": "value0","prop1": 0.0}}';
+				$points[$i] = '{ "type": "Feature","geometry": {"type": "Point","coordinates": ['.$x.','.$y.']},"properties": {"prop0": "value0","prop1": 0.0}}';
 			}
+			//die();
 			$json.=$points[$i];
 			array_push($texto, $points[$i]);
 			$i = $i+1;
+			}
 		}
-		#echo var_dump($texto);
-		//$json.=json_encode($texto);
-		//file_put_contents('data.txt', $texto, FILE_APPEND);
 	}
 	$i = $i+1;
 }
 $json.="]}";
-//file_put_contents('data.txt', ']}', FILE_APPEND);
 
-#header("Content-type: application/json");
 echo ($json);
+
 
 ?>
