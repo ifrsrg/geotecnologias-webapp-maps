@@ -3,13 +3,13 @@
 //var_dump($_POST);
 require ('gPoint.php');
 $i = 0;
-
-$batata = $_REQUEST['Kappa'];
-$pedacos = explode(",", $batata);
+$database = $_REQUEST['database'];
+$pedacos = explode(",", $database);
 $json = "";
 $json.='{"type": "FeatureCollection","features": [';
-file_put_contents('data.txt', '{"type": "FeatureCollection","features": [');
+#file_put_contents('data.txt', '{"type": "FeatureCollection","features": [');
 while($i<count($pedacos)){
+	//CHECAGEM DE QUAIS BANCOS DE DADOS FORAM SELECIONADOS NO CHECKBOX
 	if($pedacos[$i] == "Bairro"){
 		$bdcon2 = pg_connect("host={$_ENV['gs_host']} port={$_ENV['gs_port']} dbname={$_ENV['gs_dbname']} user={$_ENV['gs_user']} password={$_ENV['gs_password']}");
 		$lel = pg_exec($bdcon2, "SELECT count(*) FROM public.bairros");
@@ -24,6 +24,7 @@ while($i<count($pedacos)){
 		$kappa2 = ']]},"properties": {"color": "yellow","prop1": 0.0}},';
 		$kappa3 = ']]},"properties": {"prop0": "value0","prop1": 0.0}}';
 		while($s<=$cont){
+			//s
 			$result2 = pg_exec($bdcon2, "SELECT ST_asText(the_geom) FROM bairros WHERE gid = " .$s);
 			//PARTE QUE SEPARA OS PONTOS
 			$arr2 = pg_fetch_array($result2, 0, PGSQL_NUM);
@@ -59,7 +60,7 @@ while($i<count($pedacos)){
 			$i3 = 0;
 			while($i3 < count($vt)){
 				$txt = $txt.$vt[$i3];
-				$i3 = $i3+1;
+				$i3 = $i31;
 			}
 			$txt = $kappa.$txt.$kappa2;
 			if($i==count($pedacos)-1){
@@ -70,35 +71,32 @@ while($i<count($pedacos)){
 			$s = $s+1;
 			array_push($p, $txt);
 		}
-		$json.=$p;
 		file_put_contents('data.txt', $p, FILE_APPEND);
 	}
 	if($pedacos[$i] == "Dengue"){
-		$g = new gPoint();
+		//CONEXÃO COM O BANCO
 		$bdcon = pg_connect("host={$_ENV['gs_host']} port={$_ENV['gs_port']} dbname={$_ENV['gs_dbname_dengue']} user={$_ENV['gs_user']} password={$_ENV['gs_password']}");
+		//SELECT QUE REALIZA A CONVERSÃO DE UTM PARA LAT/LONG
 		$result = pg_exec($bdcon, "SELECT ST_X(the_geom), ST_Y(the_geom), logradouro FROM(SELECT ST_Transform
 			(the_geom, 4326) as the_geom, logradouro from armadilhas) g");
-
+		
+		//VARIÁVEIS RESPONSÁVEIS PELO CONTROLE DO WHILE
 		$ct = pg_fetch_all($result);
 		$m = count($ct);
 		$i = 0;
-		$texto = array();
-		$ini1 = '{"type": "FeatureCollection","features": [';
-		$fim1 = ']}';
 		while($i < $m){
-			$arr = pg_fetch_array($result, $i, PGSQL_NUM);
-			while ($row = pg_fetch_assoc($result)) {
+			//REPETIÇÃO PARA PREENCHER O GEOJSON  VIA FETCH ASSOC
+			while ($row = pg_fetch_assoc($result)) { 
       		$l = $row['logradouro'];
       		$x =  $row['st_x'];
    		   	$y =  $row['st_y'];
+   		   	//CONDIÇÃO PARA CONCATENAR O GEOJSON POIS A ÚLTIMA LINHA SE DIFERE DAS DEMAIS
 			if($i<$m-1){
-				$points[$i] = '{ "type": "Feature","geometry": {"type": "Point","coordinates": ['.$x.','.$y.']},"properties": {"prop0": "value0","prop1": 0.0}},';
+				$json.= '{ "type": "Feature","geometry": {"type": "Point","coordinates": ['.$x.','.$y.']},"properties": {"prop0": "value0","prop1": 0.0}},';
 			}else{
-				$points[$i] = '{ "type": "Feature","geometry": {"type": "Point","coordinates": ['.$x.','.$y.']},"properties": {"prop0": "value0","prop1": 0.0}}';
+				$json.= '{ "type": "Feature","geometry": {"type": "Point","coordinates": ['.$x.','.$y.']},"properties": {"prop0": "value0","prop1": 0.0}}';
 			}
 			//die();
-			$json.=$points[$i];
-			array_push($texto, $points[$i]);
 			$i = $i+1;
 			}
 		}
@@ -106,8 +104,7 @@ while($i<count($pedacos)){
 	$i = $i+1;
 }
 $json.="]}";
-
-echo ($json);
+echo $json;
 
 
 ?>
