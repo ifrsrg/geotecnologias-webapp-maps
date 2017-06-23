@@ -14,4 +14,12 @@ SELECT st_asText((ST_Multi(ST_GeomFromText(the_geom)))) from bairros
 
 
 SELECT box(((ST_Multi(ST_GeomFromText(the_geom))))) from bairros
-        st_astext where id = 1
+        st_astext where id = 1,
+        
+SELECT ST_X(the_geom), ST_Y(the_geom), logradouro FROM(SELECT ST_Transform
+			(the_geom, 4326) as the_geom, logradouro from armadilhas) g
+
+
+SELECT ST_AsGeoJSON(the_geom) as geojson , logradouro FROM(SELECT ST_Transform
+			(the_geom, 4326) as the_geom, logradouro from armadilhas) g
+
