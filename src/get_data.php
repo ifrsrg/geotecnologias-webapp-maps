@@ -74,6 +74,7 @@ while($i<count($pedacos)){
 		file_put_contents('data.txt', $p, FILE_APPEND);
 	}
 	if($pedacos[$i] == "Hepatite"){
+		
 		//CONEXÃO COM O BANCO
 		$bdcon = pg_connect("host={$_ENV['gs_host']} port={$_ENV['gs_port']} dbname='ocorrencia_hepatite' user={$_ENV['gs_user']} password={$_ENV['gs_password']}");
 		//SELECT QUE REALIZA A CONVERSÃO DE UTM PARA LAT/LONG
