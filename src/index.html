@@ -16,21 +16,9 @@
 <script>
 var map;
 
-function count(obj) {
-   var count=0;
-   for(var prop in obj) {
-      if (obj.hasOwnProperty(prop)) {
-         ++count;
-      }
-   }
-   return count;
-}
-
-
 
 function initMap(params) { //Recebe o JSON como parâmetro
   alert ("initMap iniciado");
-
   var myLatLng = {lat: -32.040223 ,lng: -52.088797};
   var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 15,
@@ -92,9 +80,8 @@ function callPHP(params) {
 </head>
 <body>
 <form>
-  <input type="checkbox" name="ma" value="Bairro" onclick=mapa()>Bairros<br>
-  <input type="checkbox" name="ma" value="Dengue" onclick=mapa()>Dengue<br>
-  <input type="checkbox" name="ma" value="Hepatite" onclick=mapa()>Hepatite<br>
+  <input type="checkbox" name="ma" value="dengue,armadilhas" onclick=mapa()>Dengue<br>
+  <input type="checkbox" name="ma" value="ocorrencia_hepatite,hepatitea" onclick=mapa()>Hepatite<br>
 </form>
 <div id="map"></div>
 <div id='msg'></div>

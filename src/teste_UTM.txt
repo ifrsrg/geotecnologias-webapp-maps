@@ -9,3 +9,9 @@ FROM
 SELECT ST_X(the_geom), ST_Y(the_geom), logradouro
 FROM
 (SELECT ST_Transform(the_geom, 4326) as the_geom, logradouro from armadilhas) g;
+
+
+
+--------------------
+http://localhost:8080/get_data4.php?database=dengue,armadilhas
+http://localhost:8080/get_data4.php?database=ocorrencia_hepatite,hepatitea
