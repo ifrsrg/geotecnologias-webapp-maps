@@ -80,8 +80,13 @@ function callPHP(params) {
 </head>
 <body>
 <form>
+   <!--  obs: error zeem (consulta) <input type="checkbox" name="ma" value="mub,pontos" onclick=mapa()>Mub <br> !-->
+  <input type="checkbox" name="ma" value="geosaude,ubs" onclick=mapa()>Unidades básicas de saúde<br>
+  <!-- <input type="checkbox" name="ma" value="geosaude,escolas" onclick=mapa()>Escolas<br>!-->
+  <input type="checkbox" name="ma" value="turismo,turismo" onclick=mapa()>Pontos turísticos<br>
   <input type="checkbox" name="ma" value="dengue,armadilhas" onclick=mapa()>Dengue<br>
   <input type="checkbox" name="ma" value="ocorrencia_hepatite,hepatitea" onclick=mapa()>Hepatite<br>
+  <!--<input type="checkbox" name="ma" value="geoserver,nucleos_autonomos" onclick=mapa()>Núcleos Autonomos<br>!-->
 </form>
 <div id="map"></div>
 <div id='msg'></div>
