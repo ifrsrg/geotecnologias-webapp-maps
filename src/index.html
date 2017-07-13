@@ -29,6 +29,7 @@ function initMap(params) { //Recebe o JSON como parâmetro
 
  for(var i = 0; i<length; i++){ //
    alert(Object.keys(a.features).length);
+   var title = a.features[i].properties.title;
    var coords2 = "";
    var coords = ((a.features[i].geometry.coordinates)+""); // converte o json referente a coordenada em string
    var coords2 = coords.split(","); //Split da latitude longitude 
@@ -39,10 +40,11 @@ function initMap(params) { //Recebe o JSON como parâmetro
    myLatLng = {lat: lat ,lng: lng};
    alert(lat);
    alert(lng);
+   alert(coords2[2]);
    var marker = new google.maps.Marker({
    position: myLatLng,
    map: map,
-   title: 'Foco de dengue'
+   title: title
    });
   alert("fim laço de repetição");
 }
@@ -81,11 +83,11 @@ function callPHP(params) {
 <body>
 <form>
    <!--  obs: error zeem (consulta) <input type="checkbox" name="ma" value="mub,pontos" onclick=mapa()>Mub <br> !-->
-  <input type="checkbox" name="ma" value="geosaude,ubs" onclick=mapa()>Unidades básicas de saúde<br>
+  <input type="checkbox" name="ma" value="geosaude,ubs,nome" onclick=mapa()>Unidades básicas de saúde<br>
   <!-- <input type="checkbox" name="ma" value="geosaude,escolas" onclick=mapa()>Escolas<br>!-->
-  <input type="checkbox" name="ma" value="turismo,turismo" onclick=mapa()>Pontos turísticos<br>
-  <input type="checkbox" name="ma" value="dengue,armadilhas" onclick=mapa()>Dengue<br>
-  <input type="checkbox" name="ma" value="ocorrencia_hepatite,hepatitea" onclick=mapa()>Hepatite<br>
+  <input type="checkbox" name="ma" value="turismo,turismo,principais" onclick=mapa()>Pontos turísticos<br>
+  <input type="checkbox" name="ma" value="dengue,armadilhas,cara_estab" onclick=mapa()>Dengue<br>
+  <input type="checkbox" name="ma" value="ocorrencia_hepatite,hepatitea,endereco" onclick=mapa()>Hepatite<br>
   <!--<input type="checkbox" name="ma" value="geoserver,nucleos_autonomos" onclick=mapa()>Núcleos Autonomos<br>!-->
 </form>
 <div id="map"></div>

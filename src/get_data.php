@@ -12,10 +12,11 @@ if(!empty($database)){
 	//database = [NOMEBANCO][NOMETABELA]
 	$dbname= $database[0];
 	$tablename = $database[1];
+	$localname = $database[2];
 	//CONEXÃO COM O BANCO
  	$bdcon = pg_connect("host={$_ENV['gs_host']} port={$_ENV['gs_port']} dbname=".$dbname." user={$_ENV['gs_user']} password={$_ENV['gs_password']}");
 	//SELECT GENÉRICA (APENAS PARA PONTOS) QUE REALIZA A CONVERSÃO DE UTM PARA LAT/LONG
- 	$result = pg_exec($bdcon, "SELECT ST_X(the_geom), ST_Y(the_geom) FROM(SELECT ST_Transform
+ 	$result = pg_exec($bdcon, "SELECT ST_X(the_geom), ST_Y(the_geom),".$localname. " FROM(SELECT ".$localname.", ST_Transform
  	(the_geom, 4326) as the_geom from ".$tablename.") g");
 	//VARIÁVEIS RESPONSÁVEIS PELO CONTROLE DO WHILE
  	$ct = pg_fetch_all($result);
@@ -25,18 +26,18 @@ if(!empty($database)){
 	while ($row = pg_fetch_assoc($result)) { 
        	$x =  $row['st_x'];
     	$y =  $row['st_y'];
+    	$name = $row[$localname];
 		//CONDIÇÃO PARA CONCATENAR O GEOJSON POIS A ÚLTIMA LINHA SE DIFERE DAS DEMAIS
  		if($i<$m-1){
-			$json.= '{ "type": "Feature","geometry": {"type": "Point","coordinates": ['.$x.','.$y.']},"properties": {"prop0": "value0","prop1": 0.0}},';
+			$json.= '{ "type": "Feature","geometry": {"type": "Point","coordinates": ['.$x.','.$y.']},"properties": {"title": "'.$name.'"}},';
  		}else{
-			$json.= '{ "type": "Feature","geometry": {"type": "Point","coordinates": ['.$x.','.$y.']},"properties": {"prop0": "value0","prop1": 0.0}}';
+			$json.= '{ "type": "Feature","geometry": {"type": "Point","coordinates": ['.$x.','.$y.']},"properties": {"title": "'.$name.'"}}';
  		}
  		//die();
  		$i = $i+1;
  	}
 }
-	
- 		
- 
+
 $json.="]}";
+
 echo $json;
