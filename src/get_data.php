@@ -9,15 +9,15 @@ $json.='{"type": "FeatureCollection","features": [';
 if(!empty($database)){
 	$database = explode(',', $database); 
 	//SEPARA AS INFORMAÇÕES DA CHECKBOX EM UM ARRAY
-	//database = [NOMEBANCO][NOMETABELA]
+	//database = [NOMEBANCO][NOMETABELA][DESCRICAO DO PONTO]
 	$dbname= $database[0];
 	$tablename = $database[1];
-	$localname = $database[2];
+	$localname = $database[2];	
 	//CONEXÃO COM O BANCO
  	$bdcon = pg_connect("host={$_ENV['gs_host']} port={$_ENV['gs_port']} dbname=".$dbname." user={$_ENV['gs_user']} password={$_ENV['gs_password']}");
 	//SELECT GENÉRICA (APENAS PARA PONTOS) QUE REALIZA A CONVERSÃO DE UTM PARA LAT/LONG
  	$result = pg_exec($bdcon, "SELECT ST_X(the_geom), ST_Y(the_geom),".$localname. " FROM(SELECT ".$localname.", ST_Transform
- 	(the_geom, 4326) as the_geom from ".$tablename.") g");
+ 	(the_geom, 4326) as the_geom from ".$tablename.") g ");
 	//VARIÁVEIS RESPONSÁVEIS PELO CONTROLE DO WHILE
  	$ct = pg_fetch_all($result);
  	$m = count($ct);
@@ -27,6 +27,7 @@ if(!empty($database)){
        	$x =  $row['st_x'];
     	$y =  $row['st_y'];
     	$name = $row[$localname];
+    	#$name = utf8_decode($row[$localname]);
 		//CONDIÇÃO PARA CONCATENAR O GEOJSON POIS A ÚLTIMA LINHA SE DIFERE DAS DEMAIS
  		if($i<$m-1){
 			$json.= '{ "type": "Feature","geometry": {"type": "Point","coordinates": ['.$x.','.$y.']},"properties": {"title": "'.$name.'"}},';
@@ -39,5 +40,6 @@ if(!empty($database)){
 }
 
 $json.="]}";
+
 
 echo $json;

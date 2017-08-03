@@ -15,38 +15,40 @@
 <title>Mapas dinamicos</title>
 <script>
 var map;
-
-
 function initMap(params) { //Recebe o JSON como parâmetro
-  alert ("initMap iniciado");
+  alert("initMap iniciado");
   var myLatLng = {lat: -32.040223 ,lng: -52.088797};
   var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 15,
     center: myLatLng
   });
- a = JSON.parse(params);
- length = Object.keys(a.features).length // conta o número de argumentos do objeto
+  
+  // TRATAMENTO DO GEOJSON
+  // Remove caracteres do geojson que possam causar bugs
+  params = params.replace(/[\u0000-\u0019]+/g,""); 
+  //Transforma a string do geojson em um objeto (json)
+  var a = JSON.parse(params);
 
- for(var i = 0; i<length; i++){ //
-   alert(Object.keys(a.features).length);
+  //Variável de controle do for referente ao plot dos markers
+  length = Object.keys(a.features).length // Conta o número de argumentos do objeto
+
+  for(var i = 0; i<length; i++){ //
    var title = a.features[i].properties.title;
    var coords2 = "";
    var coords = ((a.features[i].geometry.coordinates)+""); // converte o json referente a coordenada em string
-   var coords2 = coords.split(","); //Split da latitude longitude 
-
-
-   lng = parseFloat(coords2[0]); // Conversão em float da latitude e da longitude para plotar os markers
+   //SPLIT PARA SEPARAR LATITUDE DE LONGITUDE EM UM ARRAY
+   var coords2 = coords.split(",");
+   //CONVERSÃO DAS COORDENADAS LAT/LONG PARA FLOAT [NECESSÁRIO PARA PLOTAR OS MARKERS (API DO MAPS)]
+   lng = parseFloat(coords2[0]); 
    lat = parseFloat(coords2[1]);
    myLatLng = {lat: lat ,lng: lng};
-   alert(lat);
-   alert(lng);
-   alert(coords2[2]);
+   //PLOT DOS PONTOS NO MAPA
    var marker = new google.maps.Marker({
    position: myLatLng,
    map: map,
    title: title
    });
-  alert("fim laço de repetição");
+  // FIM DO LAÇO DE REPETIÇÃO
 }
  }
 
@@ -84,7 +86,7 @@ function callPHP(params) {
 <form>
    <!--  obs: error zeem (consulta) <input type="checkbox" name="ma" value="mub,pontos" onclick=mapa()>Mub <br> !-->
   <input type="checkbox" name="ma" value="geosaude,ubs,nome" onclick=mapa()>Unidades básicas de saúde<br>
-  <!-- <input type="checkbox" name="ma" value="geosaude,escolas" onclick=mapa()>Escolas<br>!-->
+  <input type="checkbox" name="ma" value="geosaude,escolas,nome" onclick=mapa()>Escolas<br>
   <input type="checkbox" name="ma" value="turismo,turismo,principais" onclick=mapa()>Pontos turísticos<br>
   <input type="checkbox" name="ma" value="dengue,armadilhas,cara_estab" onclick=mapa()>Dengue<br>
   <input type="checkbox" name="ma" value="ocorrencia_hepatite,hepatitea,endereco" onclick=mapa()>Hepatite<br>
