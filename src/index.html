@@ -29,7 +29,7 @@ function initMap(params) { //Recebe o JSON como parâmetro
   //Transforma a string do geojson em um objeto (json)
   var a = JSON.parse(params);
 
-  //Variável de controle do for referente ao plot dos markers
+  //VARIÁVEL DE CONTROLE DO FOR REFERENTE AO PLOT DOS MARKERS
   length = Object.keys(a.features).length // Conta o número de argumentos do objeto
 
   for(var i = 0; i<length; i++){ //
@@ -51,7 +51,6 @@ function initMap(params) { //Recebe o JSON como parâmetro
   // FIM DO LAÇO DE REPETIÇÃO
 }
  }
-
 function mapa(){
 var choices = [];
 var els = document.getElementsByName('ma');
